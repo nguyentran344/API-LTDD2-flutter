@@ -66,14 +66,22 @@ app.post("/api/register", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // ✅ Kiểm tra username có được cung cấp không
+    //  ✅ Kiểm tra username có được cung cấp không
     if (!username) {
       return res.status(400).json({ message: "Tên người dùng là bắt buộc" });
     }
 
-    // ✅ Kiểm tra password có được cung cấp không
+    //  ✅ Kiểm tra password có được cung cấp không
     if (!password) {
       return res.status(400).json({ message: "Mật khẩu là bắt buộc" });
+    }
+
+    //  ✅ Kiểm tra độ mạnh của password
+    if (password.length < 6) {
+      // Yêu cầu mật khẩu tối thiểu 6 ký tự
+      return res
+        .status(400)
+        .json({ message: "Mật khẩu phải có ít nhất 6 ký tự" });
     }
 
     if (await User.findOne({ username })) {
