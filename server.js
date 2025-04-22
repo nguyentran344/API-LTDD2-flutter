@@ -65,9 +65,16 @@ createAdmin();
 app.post("/api/register", async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    //  ✅ Kiểm tra username có được cung cấp không
+    if (!username) {
+      return res.status(400).json({ message: "Tên người dùng là bắt buộc" });
+    }
+
     if (await User.findOne({ username })) {
       return res.status(400).json({ message: "Tên người dùng đã tồn tại" });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
       username,
