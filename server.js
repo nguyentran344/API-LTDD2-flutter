@@ -107,7 +107,7 @@ app.post("/api/login", async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: "Sai thông tin đăng nhập" });
+      return res.status(401).json({ message: "Tên đăng nhập không tồn tại" });
     }
     const token = jwt.sign({ id: user._id, role: user.role }, "secretKey", {
       expiresIn: "7d",
